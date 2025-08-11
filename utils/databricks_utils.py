@@ -209,6 +209,19 @@ read_all_json_files(spark, "/Workspace/Users/danielbaquini@gmail.com/databricks-
 
 
 
+# conftest.py
+@pytest.fixture
+def setup_data(request, volume_acess_strategy: VolumeAccessStrategy):
+    test_name = request.function.__name__  # nome da função de teste, ex: 'test_abc'
+    test_file_path = str(request.fspath)  # ex: '/path/to/tests/test_my_etl.py'
+
+    # Monta o caminho para data/<nome_do_teste>
+    # Considerando que 'data' está no mesmo diretório dos testes
+    test_dir = os.path.dirname(test_file_path)  # diretório onde está o arquivo do teste
+    data_dir = os.path.join(test_dir, "data", test_name)
+
+    print("rodando: ", test_name)
+    print("rodando: ", data_dir)
 
 
 @pytest.mark.usefixtures("clear_global_volume_before_test", "setup_data")
